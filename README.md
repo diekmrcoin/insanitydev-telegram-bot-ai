@@ -12,6 +12,33 @@ The bot is built to interact with users on Telegram, offering a range of command
 - Command Handling: Supports various commands, including a welcome message via the `/start` command.
 - Environment Variables: Uses a `.env` file to securely manage sensitive information like bot tokens and API keys.
 
+## Project Structure
+```
+insanitydev-telegram-bot-ai/
+├── bot/
+│   ├── src/
+│   │   ├── bot.js
+│   │   └── commands/
+│   │       └── start.js
+│   ├── .env
+│   ├── .gitignore
+│   ├── package.json
+│   └── README.md
+├── LICENSE
+├── README.md
+└── terraform/
+  ├── .gitignore
+  ├── main.tf
+  ├── modules/
+  │   └── lambda/
+  │       └── lambda.tf
+  ├── providers.tf
+  ├── terraform.tf
+  ├── tfbackend/
+  │   └── dev.tfbackend
+  └── tfvars/
+    └── dev.tfvars
+```
 
 ## Getting Started
 

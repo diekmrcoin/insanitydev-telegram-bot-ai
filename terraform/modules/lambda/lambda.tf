@@ -68,6 +68,11 @@ variable "vpc" {
   default  = null
 }
 
+variable "function_url" {
+  type = bool
+  default = false
+}
+
 output "arn" {
   value = aws_lambda_function.lambda_function.arn
 }
@@ -178,4 +183,19 @@ resource "aws_lambda_event_source_mapping" "lambda_event_source_mapping" {
   event_source_arn  = var.event_sources[count.index].arn
   function_name     = aws_lambda_function.lambda_function.arn
   starting_position = "LATEST"
+}
+
+resource "aws_lambda_function_url" "test_live" {
+  count = var.function_url ? 1 : 0
+  function_name      = aws_lambda_function.lambda_function.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["*"]
+    allow_headers     = ["date", "keep-alive"]
+    expose_headers    = ["keep-alive", "date"]
+    max_age           = 86400
+  }
 }

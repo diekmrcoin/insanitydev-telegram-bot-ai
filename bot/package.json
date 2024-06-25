@@ -1,0 +1,29 @@
+{
+  "name": "telegram-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot project",
+  "main": "src/bot.js",
+  "scripts": {
+    "start": "ts-node src/bot.ts",
+    "start:prod": "node dist/bot.js",
+    "build": "tsc",
+    "prettier": "prettier --write 'src/**/*.ts'",
+    "minify": "terser ./dist/default/*.js -o ./dist/min/min.js --compress --mangle"
+  },
+  "author": "Diego Maroto",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.0",
+    "dotenv": "^16.4.5",
+    "node-telegram-bot-api": "^0.66.0",
+    "telegraf": "^4.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.8",
+    "@types/node-telegram-bot-api": "^0.64.7",
+    "prettier": "^3.3.2",
+    "terser": "^5.31.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}

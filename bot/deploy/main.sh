@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Zip the dist/lambda.js file
+cd dist
+zip -r ../artifacts/lambda.zip ./lambda.js
+
+# Update the Lambda function code
+aws lambda update-function-code --function-name insanitydev-dev-lmb-ai-bot --zip-file fileb://../artifacts/lambda.zip

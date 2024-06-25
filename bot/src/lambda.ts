@@ -1,6 +1,7 @@
+import { APIGatewayProxyEventV2, APIGatewayProxyResultV2, Handler } from 'aws-lambda';
 import TelegramBot from 'node-telegram-bot-api';
 import { ClaudeAI } from './claude/claude';
-import 'dotenv/config'
+import 'dotenv/config';
 
 // Create a new bot instance
 const bot = new TelegramBot(process.env.BOT_TOKEN!, { polling: true });
@@ -59,5 +60,40 @@ async function processAndSendMessages() {
     }
   });
 }
-
 console.log('Started bot!');
+
+export const handler: Handler<APIGatewayProxyEventV2, APIGatewayProxyResultV2> = async (event) => {
+  // console.log('Received event:', event);
+  if (!event.body) {
+    return { statusCode: 400, body: JSON.stringify({ message: 'No body provided' }) };
+  }
+  const data = JSON.parse(event.body);
+  const { message, chatId } = data;
+
+  if (!message || !chatId) {
+    return { statusCode: 400, body: JSON.stringify({ message: 'Invalid body' }) };
+  }
+
+  // Check if the chat ID is allowed
+  if (!allowedChatIds.includes(chatId)) {
+    return {
+      statusCode: 403,
+      body: JSON.stringify({ message: 'Unauthorized chat id' }),
+    };
+  }
+
+  // Send the message via the Telegram bot
+  try {
+    await bot.sendMessage(chatId, message);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Message sent successfully' }),
+    };
+  } catch (error) {
+    console.error('Failed to send message:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Failed to send message' }),
+    };
+  }
+};

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "ts-node src/bot.ts",
     "start:prod": "node dist/bot.js",
-    "build": "tsc",
+    "build": "esbuild src/lambda.ts --legal-comments=none --bundle --platform=node --target=node20 --minify --outfile=dist/lambda.js",
+    "clean": "rimraf dist",
     "prettier": "prettier --write 'src/**/*.ts'",
     "minify": "terser ./dist/default/*.js -o ./dist/min/min.js --compress --mangle"
   },
@@ -14,15 +15,18 @@
   "license": "MIT",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.24.0",
+    "aws-lambda": "^1.0.7",
     "dotenv": "^16.4.5",
     "node-telegram-bot-api": "^0.66.0",
     "telegraf": "^4.16.3"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.140",
     "@types/node": "^20.14.8",
     "@types/node-telegram-bot-api": "^0.64.7",
+    "esbuild": "^0.21.5",
     "prettier": "^3.3.2",
-    "terser": "^5.31.1",
+    "rimraf": "^5.0.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2"
   }

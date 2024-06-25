@@ -1,0 +1,4 @@
+bucket  = "insanitydev-eu-south-2-tfstates"
+key     = "telegram-bot/dev/terraform.tfstate"
+region  = "eu-south-2"
+encrypt = true

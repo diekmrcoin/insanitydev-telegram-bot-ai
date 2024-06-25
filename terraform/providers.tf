@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-south-2"
+  region = "eu-west-3"
   default_tags {
     tags = {
       Deploy  = "terraform"

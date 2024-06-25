@@ -11,6 +11,7 @@ The bot is built to interact with users on Telegram, offering a range of command
 - AI Integration: Utilizes the `@anthropic-ai/sdk` for advanced AI capabilities.
 - Command Handling: Supports various commands, including a welcome message via the `/start` command.
 - Environment Variables: Uses a `.env` file to securely manage sensitive information like bot tokens and API keys.
+- [Lambda is callable as HTTPS](https://hkgmaop54yrwijhn25xs5kmjne0entnv.lambda-url.eu-west-3.on.aws/)
 
 ## Project Structure
 ```

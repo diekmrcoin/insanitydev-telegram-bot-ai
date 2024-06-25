@@ -12,3 +12,12 @@ module "lambda_bot" {
   handler      = "lambda.handler"
   function_url = true
 }
+
+# module "api" {
+#   source          = "./modules/api_gateway"
+#   prefix          = "insanitydev"
+#   name            = "ai-bot"
+#   description     = "Insanity AI Bot"
+#   environment     = var.environment
+#   lambda_function = module.lambda_bot
+# }

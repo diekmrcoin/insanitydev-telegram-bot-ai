@@ -185,7 +185,7 @@ resource "aws_lambda_event_source_mapping" "lambda_event_source_mapping" {
   starting_position = "LATEST"
 }
 
-resource "aws_lambda_function_url" "test_live" {
+resource "aws_lambda_function_url" "lambda_function_url" {
   count              = var.function_url ? 1 : 0
   function_name      = aws_lambda_function.lambda_function.function_name
   authorization_type = "NONE"

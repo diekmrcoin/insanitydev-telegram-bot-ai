@@ -73,6 +73,12 @@ variable "function_url" {
   default = false
 }
 
+variable "reserved_concurrent_executions" {
+  description = "The amount of reserved concurrent executions for this lambda function. 1000 by default."
+  type        = number
+  default     = 1000
+}
+
 output "arn" {
   value = aws_lambda_function.lambda_function.arn
 }
@@ -137,17 +143,18 @@ data "archive_file" "dummy_lambda_archive" {
 }
 
 resource "aws_lambda_function" "lambda_function" {
-  architectures = [var.edge ? "x86_64" : "arm64"]
-  description   = var.description
-  filename      = data.archive_file.dummy_lambda_archive.output_path
-  function_name = "${var.prefix}-${var.environment}-lmb-${var.name}"
-  handler       = var.handler
-  memory_size   = var.memory_size
-  package_type  = "Zip"
-  publish       = var.edge
-  role          = aws_iam_role.iam_role.arn
-  runtime       = var.runtime
-  timeout       = var.timeout
+  architectures                  = [var.edge ? "x86_64" : "arm64"]
+  description                    = var.description
+  filename                       = data.archive_file.dummy_lambda_archive.output_path
+  function_name                  = "${var.prefix}-${var.environment}-lmb-${var.name}"
+  handler                        = var.handler
+  memory_size                    = var.memory_size
+  package_type                   = "Zip"
+  publish                        = var.edge
+  role                           = aws_iam_role.iam_role.arn
+  runtime                        = var.runtime
+  timeout                        = var.timeout
+  reserved_concurrent_executions = var.reserved_concurrent_executions
 
   dynamic "environment" {
     for_each = var.variables != null ? [var.variables] : []

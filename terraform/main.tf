@@ -12,6 +12,7 @@ module "lambda_bot" {
   handler                        = "lambda.handler"
   function_url                   = true
   reserved_concurrent_executions = 1
+  timeout = 10
 }
 
 # module "api" {

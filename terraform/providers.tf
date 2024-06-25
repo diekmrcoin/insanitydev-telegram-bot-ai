@@ -10,7 +10,7 @@ provider "aws" {
 
 provider "aws" {
   region = "us-west-2"
-  alias = "cloudfront"
+  alias  = "cloudfront"
   default_tags {
     tags = {
       Deploy  = "terraform"

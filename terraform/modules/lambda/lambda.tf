@@ -1,18 +1,18 @@
 variable "description" {
-  type     = string
+  type = string
 }
 
 variable "edge" {
-  type     = bool
-  default  = false
+  type    = bool
+  default = false
 }
 
 variable "prefix" {
-  type     = string
+  type = string
 }
 
 variable "environment" {
-  type     = string
+  type = string
 }
 
 variable "event_sources" {
@@ -20,40 +20,40 @@ variable "event_sources" {
     arn        = string
     batch_size = number
   }))
-  default  = []
+  default = []
 }
 
 variable "handler" {
-  type     = string
+  type = string
 }
 
 variable "memory_size" {
-  type     = string
-  default  = "128"
+  type    = string
+  default = "128"
 }
 
 variable "name" {
-  type     = string
+  type = string
 }
 
 variable "permissions" {
-  type     = set(string)
-  default  = []
+  type    = set(string)
+  default = []
 }
 
 variable "runtime" {
-  type     = string
-  default  = "nodejs20.x"
+  type    = string
+  default = "nodejs20.x"
 }
 
 variable "timeout" {
-  type     = string
-  default  = "3"
+  type    = string
+  default = "3"
 }
 
 variable "variables" {
-  type     = map(string)
-  default  = null
+  type    = map(string)
+  default = null
 }
 
 variable "vpc" {
@@ -65,11 +65,11 @@ variable "vpc" {
     subnet_private_c       = object({ id = string })
     security_group_private = object({ id = string })
   })
-  default  = null
+  default = null
 }
 
 variable "function_url" {
-  type = bool
+  type    = bool
   default = false
 }
 
@@ -186,7 +186,7 @@ resource "aws_lambda_event_source_mapping" "lambda_event_source_mapping" {
 }
 
 resource "aws_lambda_function_url" "test_live" {
-  count = var.function_url ? 1 : 0
+  count              = var.function_url ? 1 : 0
   function_name      = aws_lambda_function.lambda_function.function_name
   authorization_type = "NONE"
 

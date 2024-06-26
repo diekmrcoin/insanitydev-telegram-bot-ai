@@ -13,34 +13,6 @@ The bot is built to interact with users on Telegram, offering a range of command
 - Environment Variables: Uses a `.env` file to securely manage sensitive information like bot tokens and API keys.
 - [Lambda is callable as HTTPS](https://hkgmaop54yrwijhn25xs5kmjne0entnv.lambda-url.eu-west-3.on.aws/)
 
-## Project Structure
-```
-insanitydev-telegram-bot-ai/
-├── bot/
-│   ├── src/
-│   │   ├── bot.js
-│   │   └── commands/
-│   │       └── start.js
-│   ├── .env
-│   ├── .gitignore
-│   ├── package.json
-│   └── README.md
-├── LICENSE
-├── README.md
-└── terraform/
-  ├── .gitignore
-  ├── main.tf
-  ├── modules/
-  │   └── lambda/
-  │       └── lambda.tf
-  ├── providers.tf
-  ├── terraform.tf
-  ├── tfbackend/
-  │   └── dev.tfbackend
-  └── tfvars/
-    └── dev.tfvars
-```
-
 ## Getting Started
 
 1. Clone the repository to your local machine.
@@ -49,6 +21,28 @@ insanitydev-telegram-bot-ai/
 4. Create a `.env` file in the `bot/` directory and add your Telegram bot token and any other required API keys or credentials.
 5. Start the bot by running `npm start` from the `bot/` directory.
 6. Your Telegram bot is now up and running! Interact with it by sending messages or commands on Telegram.
+
+## Serverless Deployment
+
+The bot can be deployed as a serverless function on AWS Lambda. To deploy the bot, follow these steps:
+
+1. Cd into the `bot/` directory.
+2. Install the npm dependencies by running `npm install`.
+3. Create a `.env` file in the `bot/` directory and add your Telegram bot token and any other required API keys or credentials.
+4. Configure aws-cli with your AWS credentials: `aws configure`.
+5. Run `npm run deploy` to deploy the bot to AWS Lambda.
+
+## Env content
+
+```env
+# Add your Telegram bot token here
+TELEGRAM_BOT_TOKEN=YOUR_BOT_TOKEN
+TELEGRAM_SECRET_TOKEN=YOUR_ANTHROPIC_API_KEY
+# List of channels
+TELEGRAM_ALLOWED_CHAT_IDS=0,1,2
+# Add any other environment variables or API keys here
+CLAUDE_API_KEY=YOUR_CLAUDE
+```
 
 ## Contributing
 

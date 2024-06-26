@@ -1,7 +1,7 @@
 import { Telegraf } from 'telegraf';
 
 export class Bot {
-  private bot: Telegraf;
+  public readonly bot: Telegraf;
   private running: boolean = false;
   constructor(token: string) {
     this.bot = new Telegraf(token);
@@ -14,6 +14,14 @@ export class Bot {
     }
     this.bot.launch();
     this.running = true;
+  }
+
+  public stop(signal: string) {
+    if (!this.running) {
+      return;
+    }
+    this.bot.stop(signal);
+    this.running = false;
   }
 
   private defineCommands() {

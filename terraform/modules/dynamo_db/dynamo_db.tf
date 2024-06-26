@@ -38,7 +38,7 @@ variable "global_secondary_indexes" {
     # only mandatory when projection_type = "INCLUDE"
     include = list(string)
     # "ALL" | "INCLUDE" | "KEYS_ONLY"
-    include = list(string)
+    projection_type = list(string)
   }))
   default = []
 }
@@ -154,7 +154,7 @@ resource "aws_appautoscaling_target" "scale_read_indexes" {
 }
 
 resource "aws_appautoscaling_policy" "scale_read_indexes" {
-  for_each           = { for k, scale in aws_aws_appautoscaling_target.scale_read_indexes : k => scale }
+  for_each           = { for k, scale in aws_appautoscaling_target.scale_read_indexes : k => scale }
   name               = "GlobalIndexReadCapacityUtilization:${each.value.resource_id}"
   policy_type        = "TargetTrackingScaling"
   resource_id        = each.value.resource_id
@@ -208,7 +208,7 @@ resource "aws_appautoscaling_target" "scale_write_indexes" {
 }
 
 resource "aws_appautoscaling_policy" "scale_write_indexes" {
-  for_each           = { for k, scale in aws_aws_appautoscaling_target.scale_write_indexes : k => scale }
+  for_each           = { for k, scale in aws_appautoscaling_target.scale_write_indexes : k => scale }
   name               = "GlobalIndexWriteCapacityUtilization:${each.value.resource_id}"
   policy_type        = "TargetTrackingScaling"
   resource_id        = each.value.resource_id

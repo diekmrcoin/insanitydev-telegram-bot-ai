@@ -79,6 +79,11 @@ variable "reserved_concurrent_executions" {
   default     = 1000
 }
 
+variable "attach_policies" {
+  type    = map(string)
+  default = {}
+}
+
 output "arn" {
   value = aws_lambda_function.lambda_function.arn
 }
@@ -205,4 +210,10 @@ resource "aws_lambda_function_url" "lambda_function_url" {
     expose_headers    = ["keep-alive", "date"]
     max_age           = 86400
   }
+}
+
+resource "aws_iam_role_policy_attachment" "custom_policies_attachment" {
+  for_each   = var.attach_policies
+  role       = aws_iam_role.iam_role.name
+  policy_arn = each.value
 }

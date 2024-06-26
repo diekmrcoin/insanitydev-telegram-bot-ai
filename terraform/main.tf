@@ -42,9 +42,9 @@ module "lambda_bot" {
   name        = "ai-bot"
   description = "Insanity AI Bot"
   environment = var.environment
-  permissions = [
-    aws_iam_policy.lambda_memory_access.arn
-  ]
+  attach_policies = {
+    dyamodb_memory_access = aws_iam_policy.lambda_memory_access.arn
+  }
   handler                        = "lambda.handler"
   function_url                   = true
   reserved_concurrent_executions = 1

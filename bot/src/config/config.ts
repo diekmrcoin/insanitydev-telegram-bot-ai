@@ -3,7 +3,20 @@ export class Config {
   public static readonly TELEGRAM_SECRET_TOKEN: string = process.env.TELEGRAM_SECRET_TOKEN || '';
   public static readonly CLAUDE_API_KEY: string = process.env.CLAUDE_API_KEY || '';
   // TODO: migrate this to a dynamodb record
-  public static readonly TELEGRAM_ALLOWED_CHAT_IDS: number[] = (process.env.TELEGRAM_ALLOWED_CHAT_IDS || '').split(',').map(Number);
+  public static readonly TELEGRAM_ALLOWED_CHAT_IDS: number[] = (process.env.TELEGRAM_ALLOWED_CHAT_IDS || '')
+    .split(',')
+    .map(Number);
+  // TODO: migrate this to a dynamodb record
+  public static readonly TELEGRAM_ADMIN_CHAT_IDS: number[] = (process.env.TELEGRAM_ADMIN_CHAT_IDS || '')
+    .split(',')
+    .map(Number);
+
+  public static readonly AWS_CREDENTIALS = process.env.AWS_ACCESS_KEY
+    ? {
+        accessKeyId: process.env.AWS_ACCESS_KEY,
+        secretAccessKey: process.env.AWS_SECRET_KEY,
+      }
+    : undefined;
 
   public static validate(fail: boolean): boolean {
     if (!Config.TELEGRAM_BOT_TOKEN) {
@@ -17,13 +30,6 @@ export class Config {
       console.error('CLAUDE_API_KEY is required');
       if (fail) {
         throw new Error('CLAUDE_API_KEY is required');
-      }
-      return false;
-    }
-    if (!Config.TELEGRAM_ALLOWED_CHAT_IDS.length) {
-      console.error('ALLOWED_CHAT_IDS is required');
-      if (fail) {
-        throw new Error('ALLOWED_CHAT_IDS is required');
       }
       return false;
     }

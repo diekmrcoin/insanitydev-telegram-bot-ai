@@ -47,7 +47,7 @@ module "lambda_bot" {
   }
   handler                        = "lambda.serverlessBot"
   function_url                   = true
-  reserved_concurrent_executions = 1
+  reserved_concurrent_executions = 10
   timeout                        = 10
 }
 

@@ -58,9 +58,15 @@ export class Bot {
         ctx.message.text.startsWith('Clau') &&
         (ctx.message.chat.type === 'group' || ctx.message.chat.type === 'supergroup');
       const implicitAndPrivate = ctx.message.chat.type === 'private';
-      const model = explicitAndGroup ? ClaudeModels.sonnet_3_5 : ClaudeModels.haiku_3;
+      const isAdmin = Config.TELEGRAM_ADMIN_CHAT_IDS.includes(ctx.message.chat.id);
+      const model = explicitAndGroup || isAdmin ? ClaudeModels.sonnet_3_5 : ClaudeModels.haiku_3;
       if (explicitAndGroup || implicitAndPrivate) {
-        const response: string = await this.claude.sendMessage(ctx.message.text, model);
+        const response: string = await this.claude.sendMessage(
+          ctx.message.chat.id,
+          ctx.message.from.username || 'none',
+          ctx.message.text,
+          model,
+        );
         ctx.reply(response, { parse_mode: 'Markdown' });
       } else {
         console.log('Message not processed', ctx.message.text, ctx.message.chat.type);

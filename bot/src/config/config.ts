@@ -3,7 +3,7 @@ export class Config {
   public static readonly TELEGRAM_SECRET_TOKEN: string = process.env.TELEGRAM_SECRET_TOKEN || '';
   public static readonly CLAUDE_API_KEY: string = process.env.CLAUDE_API_KEY || '';
   // TODO: migrate this to a dynamodb record
-  public static readonly ALLOWED_CHAT_IDS: string[] = (process.env.ALLOWED_CHAT_IDS || '').split(',');
+  public static readonly TELEGRAM_ALLOWED_CHAT_IDS: number[] = (process.env.TELEGRAM_ALLOWED_CHAT_IDS || '').split(',').map(Number);
 
   public static validate(fail: boolean): boolean {
     if (!Config.TELEGRAM_BOT_TOKEN) {
@@ -20,7 +20,7 @@ export class Config {
       }
       return false;
     }
-    if (!Config.ALLOWED_CHAT_IDS.length) {
+    if (!Config.TELEGRAM_ALLOWED_CHAT_IDS.length) {
       console.error('ALLOWED_CHAT_IDS is required');
       if (fail) {
         throw new Error('ALLOWED_CHAT_IDS is required');

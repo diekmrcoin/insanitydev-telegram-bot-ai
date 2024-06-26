@@ -1,7 +1,10 @@
 import 'dotenv/config';
 import { Bot } from './bot/bot';
 import { Config } from './config/config';
-const bot = new Bot(Config.TELEGRAM_BOT_TOKEN);
+import { ClaudeAI } from './claude/claude';
+Config.validate(true);
+const claude = new ClaudeAI(Config.CLAUDE_API_KEY);
+const bot = new Bot(Config.TELEGRAM_BOT_TOKEN, claude);
 bot.run();
 
 // Enable graceful stop

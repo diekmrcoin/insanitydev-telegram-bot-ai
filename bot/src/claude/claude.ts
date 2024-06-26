@@ -1,47 +1,44 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { TextBlock } from '@anthropic-ai/sdk/resources/messages';
 
-class ClaudeAI {
+export class ClaudeAI {
   private anthropic: Anthropic;
-  private chats: Record<string, any[]>;
   private systemConfig: any;
-  constructor() {
+  constructor(apiKey: string) {
     this.anthropic = new Anthropic({
-      apiKey: process.env.CLAUDE_API_KEY,
+      apiKey: apiKey,
     });
-    this.chats = {};
     this.systemConfig = {
       role: 'user',
       content:
-        'You are Clau, a female engineer, you must answer spanish and you are in a chat group of software engineering. From now on, you will get a compendium of all the messages a chat group has sent every minute. Collaborate and engage with the messages trying to help the users. Try to be very concise and helpful.',
+        '<system>You are Clau, a cheerful female engineer, you must answer spanish, you can use Markdown, and you are in a chat group of software engineering. From now on, you will get a compendium of all the messages a chat group has sent every minute. Collaborate and engage with the messages trying to help the users. Try to be very concise and helpful.<system>',
     };
   }
 
-  async sendMessage(chatId: string, chatStory: string): Promise<string> {
-    this.chats[chatId] = this.chats[chatId] || [
+  async sendMessage(message: string, model = ClaudeModels.haiku_3): Promise<string> {
+    const chain = [
       this.systemConfig,
       {
         role: 'assistant',
         content: 'Hola 💅, soy Clau, vuestro asistente, estoy aquí para opinar y ayudar en lo necesario.',
       },
+      {
+        role: 'user',
+        content: message,
+      },
     ];
-    this.chats[chatId].push({
-      role: 'user',
-      content: chatStory,
-    });
-    const message = await this.anthropic.messages.create({
+    const answer = await this.anthropic.messages.create({
       max_tokens: 1024,
-      messages: [...this.chats[chatId]],
-      model: 'claude-3-5-sonnet-20240620',
+      messages: chain,
+      model: model,
     });
-
-    console.log(message.content);
-    this.chats[chatId].push({
-      role: 'assistant',
-      content: message.content,
-    });
-    return (message.content[0] as TextBlock).text;
+    return (answer.content[0] as TextBlock).text;
   }
 }
 
-export { ClaudeAI };
+export enum ClaudeModels {
+  sonnet_3_5 = 'claude-3-5-sonnet-20240620',
+  opus_3 = 'claude-3-opus-20240229',
+  sonnet_3 = 'claude-3-sonnet-20240229',
+  haiku_3 = 'claude-3-haiku-20240307',
+}

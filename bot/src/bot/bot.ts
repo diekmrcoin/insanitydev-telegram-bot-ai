@@ -1,11 +1,15 @@
-import { Telegraf } from 'telegraf';
+import { Context, Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
+import { ClaudeAI, ClaudeModels } from '../claude/claude';
+import { Config } from '../config/config';
 
 export class Bot {
   private bot: Telegraf;
+  private claude: ClaudeAI;
   private running: boolean = false;
-  constructor(token: string) {
+  constructor(token: string, claude: ClaudeAI) {
     this.bot = new Telegraf(token);
+    this.claude = claude;
     this.defineCommands();
   }
 
@@ -33,25 +37,54 @@ export class Bot {
   private defineCommands() {
     this.bot.command('start', (ctx) => this.startCommand(ctx));
     this.bot.command('help', (ctx) => this.helpCommand(ctx));
+    this.bot.command('quit', (ctx) => this.quitCommand(ctx));
 
-    this.bot.on(message('text'), (ctx) => this.onText(ctx));
+    /**
+     * This method answer when:
+     * If the text starts with "Clau" and the chat is a group
+     * If not, if the chat is private
+     */
+    this.bot.on(message('text'), async (ctx) => {
+      if (!Config.TELEGRAM_ALLOWED_CHAT_IDS.includes(ctx.message.chat.id)) {
+        console.log('Chat not allowed', ctx.message.chat.id, {
+          from: {
+            id: ctx.message.from.id,
+            username: ctx.message.from.username,
+          },
+        });
+        return;
+      }
+      const explicitAndGroup = ctx.message.text.startsWith('Clau') && ctx.message.chat.type === 'group';
+      const implicitAndPrivate = ctx.message.chat.type === 'private';
+      const model = explicitAndGroup ? ClaudeModels.sonnet_3_5 : ClaudeModels.haiku_3;
+      if (explicitAndGroup || implicitAndPrivate) {
+        const response: string = await this.claude.sendMessage(ctx.message.text, model);
+        ctx.reply(response, { parse_mode: 'Markdown' });
+      }
+      // ctx.reply(ctx.message.text);
+    });
   }
 
-  private startCommand(ctx: any) {
-    ctx.reply('Welcome to the Telegram bot!');
+  private startCommand(ctx: Context) {
+    ctx.reply('Welcome to the Telegram bot!', { parse_mode: 'Markdown' });
   }
 
-  private async quitCommand(ctx: any) {
-    ctx.reply('Goodbye!');
+  private async quitCommand(ctx: Context) {
+    ctx.reply('Goodbye!', { parse_mode: 'Markdown' });
     // await ctx.telegram.leaveChat(ctx.message.chat.id);
     await ctx.leaveChat();
   }
 
-  private helpCommand(ctx: any) {
-    ctx.reply('This is a help message');
-  }
-
-  private onText(ctx: any) {
-    ctx.reply(ctx.message.text);
+  private helpCommand(ctx: Context) {
+    const commands = [
+      'I understand the following commands:',
+      '*/start* - Start the bot',
+      '*/help* - Show this help message',
+      '*/quit* - Quit the bot',
+      '_memory is work in progress_',
+      '*If this is a group, I only answer when invoked by Clau, my name.*',
+      "-Example: 'Clau, what is the meaning of life?'",
+    ];
+    ctx.reply(commands.join('\n'), { parse_mode: 'Markdown' });
   }
 }

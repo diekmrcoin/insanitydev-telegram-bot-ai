@@ -1,4 +1,5 @@
 import { Telegraf } from 'telegraf';
+import { message } from 'telegraf/filters';
 
 export class Bot {
   public readonly bot: Telegraf;
@@ -25,14 +26,27 @@ export class Bot {
   }
 
   private defineCommands() {
-    this.bot.command('start', this.startCommand.bind(this));
+    this.bot.command('start', (ctx) => this.startCommand(ctx));
+    this.bot.command('help', (ctx) => this.helpCommand(ctx));
+
+    this.bot.on(message('text'), (ctx) => this.onText(ctx));
   }
 
   private startCommand(ctx: any) {
     ctx.reply('Welcome to the Telegram bot!');
   }
 
+  private async quitCommand(ctx: any) {
+    ctx.reply('Goodbye!');
+    // await ctx.telegram.leaveChat(ctx.message.chat.id);
+    await ctx.leaveChat();
+  }
+
   private helpCommand(ctx: any) {
     ctx.reply('This is a help message');
+  }
+
+  private onText(ctx: any) {
+    ctx.reply(ctx.message.text);
   }
 }

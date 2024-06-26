@@ -44,6 +44,12 @@ TELEGRAM_ALLOWED_CHAT_IDS=0,1,2
 CLAUDE_API_KEY=YOUR_CLAUDE
 ```
 
+
+## Telegram webhook config
+
+`npm run set-webhook -- -t $BOT_TOKEN -D '{ "url": $FULL_URL_TO_FUNCTION }'`
+Telegram [docs](https://core.telegram.org/bots/api#setwebhook)
+
 ## Contributing
 
 We welcome contributions! If you have suggestions, bug reports, or feature requests, please open an issue or submit a pull request. See the [Contributing](bot/README.md#Contributing) section in the bot's README for more details.

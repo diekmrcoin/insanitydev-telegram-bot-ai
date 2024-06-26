@@ -54,12 +54,16 @@ export class Bot {
         });
         return;
       }
-      const explicitAndGroup = ctx.message.text.startsWith('Clau') && ctx.message.chat.type === 'group';
+      const explicitAndGroup =
+        ctx.message.text.startsWith('Clau') &&
+        (ctx.message.chat.type === 'group' || ctx.message.chat.type === 'supergroup');
       const implicitAndPrivate = ctx.message.chat.type === 'private';
       const model = explicitAndGroup ? ClaudeModels.sonnet_3_5 : ClaudeModels.haiku_3;
       if (explicitAndGroup || implicitAndPrivate) {
         const response: string = await this.claude.sendMessage(ctx.message.text, model);
         ctx.reply(response, { parse_mode: 'Markdown' });
+      } else {
+        console.log('Message not processed', ctx.message.text, ctx.message.chat.type);
       }
       // ctx.reply(ctx.message.text);
     });

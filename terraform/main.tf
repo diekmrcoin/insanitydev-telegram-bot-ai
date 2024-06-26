@@ -9,6 +9,10 @@ module "dynamodb_bot_memory" {
   environment = var.environment
   hash_key    = { name = "partition", type = "S" }
   range_key   = { name = "id", type = "S" }
+  ttl = {
+    enabled        = true
+    attribute_name = "TTL"
+  }
 }
 
 # Policy for the Lambda function to access the DynamoDB table

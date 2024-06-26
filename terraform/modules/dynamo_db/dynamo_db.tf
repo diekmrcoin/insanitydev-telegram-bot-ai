@@ -43,6 +43,18 @@ variable "global_secondary_indexes" {
   default = []
 }
 
+variable "ttl" {
+  type = object({
+    enabled        = bool
+    attribute_name = string
+  })
+  default = {
+    enabled        = false
+    attribute_name = ""
+  }
+
+}
+
 output "arn" {
   value = aws_dynamodb_table.dynamodb_table.arn
 }
@@ -106,8 +118,8 @@ resource "aws_dynamodb_table" "dynamodb_table" {
   }
 
   ttl {
-    enabled        = false
-    attribute_name = ""
+    enabled        = var.ttl.enabled
+    attribute_name = var.ttl.attribute_name
   }
 
   lifecycle {

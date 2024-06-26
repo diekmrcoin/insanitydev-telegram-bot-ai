@@ -25,6 +25,11 @@ telegram-bot
 
 - `package.json`: This file is the configuration file for npm. It lists the dependencies and scripts for the project. You can use it to install the required packages and run scripts such as starting the bot.
 
+## Telegram webhook config
+
+`npm run set-webhook -- -t $BOT_TOKEN -D '{ "url": $FULL_URL_TO_FUNCTION }'`
+Telegram [docs](https://core.telegram.org/bots/api#setwebhook)
+
 ## Getting Started
 
 To set up and run the Telegram bot, follow these steps:

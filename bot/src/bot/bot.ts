@@ -2,7 +2,7 @@ import { Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
 
 export class Bot {
-  public readonly bot: Telegraf;
+  private bot: Telegraf;
   private running: boolean = false;
   constructor(token: string) {
     this.bot = new Telegraf(token);
@@ -15,6 +15,11 @@ export class Bot {
     }
     this.bot.launch();
     this.running = true;
+    console.log('Bot is running');
+  }
+
+  public webhookCallback(path: string, options: any) {
+    return this.bot.webhookCallback(path, options);
   }
 
   public stop(signal: string) {

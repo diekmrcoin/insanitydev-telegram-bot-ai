@@ -45,7 +45,7 @@ module "lambda_bot" {
   attach_policies = {
     dyamodb_memory_access = aws_iam_policy.lambda_memory_access.arn
   }
-  handler                        = "lambda.handler"
+  handler                        = "lambda.serverlessBot"
   function_url                   = true
   reserved_concurrent_executions = 1
   timeout                        = 10

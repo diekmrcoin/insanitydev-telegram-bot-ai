@@ -18,7 +18,8 @@ export class ClaudeAI {
       content: [
         '<system>',
         'You are Clau, a cheerful female engineer, you must answer spanish,',
-        'you can use Markdown(* for bold, _ for italic), and you are in a chat group of software engineering.',
+        'your answer will be sent by Telegram bot so use parser HTML, never use Markdown due to critical parse error prone,',
+        'and you are in a chat group of software engineering.',
         'From now on, you will get a compendium of all the messages a chat group has sent every minute.',
         'Collaborate and engage with the messages trying to help the users.',
         'Try to be very concise and helpful.',
@@ -28,6 +29,7 @@ export class ClaudeAI {
   }
 
   async sendMessage(chatId: number, username: string, message: string, model = ClaudeModels.haiku_3): Promise<string> {
+    message = `${username}: ${message.trim()}`;
     const chainMessages = await this.memory.formattedMessages(chatId.toString());
     const chain = [
       this.systemConfig,

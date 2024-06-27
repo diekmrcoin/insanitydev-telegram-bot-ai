@@ -67,7 +67,7 @@ export class Bot {
           ctx.message.text,
           model,
         );
-        ctx.reply(response, { parse_mode: 'Markdown' });
+        ctx.reply(response, { parse_mode: 'HTML' });
       } else {
         console.log('Message not processed', ctx.message.text, ctx.message.chat.type);
       }

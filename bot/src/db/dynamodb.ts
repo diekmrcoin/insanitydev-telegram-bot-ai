@@ -1,4 +1,5 @@
 import {
+  AttributeValue,
   BatchWriteItemCommandInput,
   DynamoDB,
   PutItemCommandInput,
@@ -19,7 +20,7 @@ export class DynamoDBWrapper {
     return `${new Date().getTime()}_${Math.floor(Math.random() * 100000)}`;
   }
 
-  async addChatRecord(data: any) {
+  async addChatRecord(data: Record<string, AttributeValue>) {
     const now = new Date();
     const id = this.genId();
     const params: PutItemCommandInput = {
@@ -41,7 +42,7 @@ export class DynamoDBWrapper {
     }
   }
 
-  async addChatRecords(dataItems: any[]) {
+  async addChatRecords(dataItems: Record<string, AttributeValue>[]) {
     const chunkSize = 25; // DynamoDB batchWrite limit
     for (let i = 0; i < dataItems.length; i += chunkSize) {
       const chunk = dataItems.slice(i, i + chunkSize);
@@ -76,7 +77,7 @@ export class DynamoDBWrapper {
     }
   }
 
-  async getChatRecord(chatId: string, amount?: number): Promise<any[]> {
+  async getChatRecord(chatId: string, amount?: number): Promise<Record<string, AttributeValue>[]> {
     const params: QueryCommandInput = {
       TableName: this.tableName,
       KeyConditionExpression: '#partitionKey = :partitionKey',

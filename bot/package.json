@@ -18,7 +18,6 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.24.0",
     "@aws-sdk/client-dynamodb": "^3.602.0",
-    "aws-lambda": "^1.0.7",
     "dotenv": "^16.4.5",
     "node-telegram-bot-api": "^0.66.0",
     "serverless-http": "^3.2.0",
@@ -26,7 +25,6 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.140",
     "@types/node": "^20.14.8",
     "@types/node-telegram-bot-api": "^0.64.7",
     "@types/uuid": "^10.0.0",
